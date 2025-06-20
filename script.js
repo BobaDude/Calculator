@@ -20,6 +20,10 @@ let waitingForSecondNum = false;
 
 const display = document.getElementById("display");
 
+function updateDisplay(text) {
+  display.textContent = text;
+}
+
 function inputDigit(digit) {
   if (waitingForSecondNum) {
     updateDisplay(digit);
@@ -98,4 +102,4 @@ document.querySelectorAll(".btn.operator").forEach((button) => {
 
 document.getElementById("clear").addEventListener("click", resetCalculator);
 
-document.getElementById("equals").addEventListener("click", handleEquals);
+document.getElementById("equals").addEventListener("click", handlesEquals);
