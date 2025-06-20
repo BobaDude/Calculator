@@ -28,7 +28,7 @@ function inputDigit(digit) {
     if (display.textContent === "0" && digit !== ".") {
       updateDisplay(digit);
     } else if (digit === "." && display.textContent.includes(".")) {
-      // Prevent multiple decimals
+      
       return;
     } else {
       updateDisplay(display.textContent + digit);
@@ -60,3 +60,42 @@ function handleOperator(nextOperator) {
   operator = nextOperator;
   waitingForSecondNum = true;
 }
+
+function resetCalculator() {
+  updateDisplay("0");
+  firstNum = null;
+  operator = null;
+  waitingForSecondNum = false;
+}
+
+function handlesEquals() {
+  const inputValue = parseFloat(display.textContent);
+
+  if (operator === null || waitingForSecondNum) {return;
+  }
+
+  const result = calculate(firstNum, inputValue, operator);
+  if (result !== null) {
+    updateDisplay(String(Math.round(result * 100000) / 100000)); 
+    firstNum = result;
+    operator = null;
+    waitingForSecondNum = false;
+  } else {
+    resetCalculator();
+  }
+}
+document.querySelectorAll(".btn.digit").forEach((button) => {
+  button.addEventListener("click", (e) => {
+    inputDigit(e.target.dataset.digit);
+  });
+});
+
+document.querySelectorAll(".btn.operator").forEach((button) => {
+  button.addEventListener("click", (e) => {
+    handleOperator(e.target.dataset.operator);
+  });
+});
+
+document.getElementById("clear").addEventListener("click", resetCalculator);
+
+document.getElementById("equals").addEventListener("click", handleEquals);
